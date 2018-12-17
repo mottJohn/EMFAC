@@ -3,6 +3,30 @@ A python library to transform data into [EMFAC](https://www.epd.gov.hk/epd/engli
 
 The inputs of the library should be in a standard format. Therefore, table schema is defined first, and the logic of generating output tables will be presented.
 
+# Template for Traffic Consultant
+Currently, the format of subconsultant's submission is not computer friendly. In fact, there are mutiple tables joined together as one large table.
+
+It is suggested the traffic consultant should follow the format below:
+1. A table to store vehicle breakdown in Percent (The assuption of such table is vehice breakdown is a variable of time and road id only)
+    * Road ID
+    * Hour
+    * Vehicle breakdown for each vehicle types
+
+2. A table to store average speed (The assumption of such table is vehicle breadown is a variable of time and road id only)
+    * Road ID
+    * Hour
+    * Year in multiindex (After flattening should be Year and average speed in column)
+
+3. A table to store VEH (The assumption of such table is VEH is a variable of road id, hour, year, and direction only)
+    * Road ID
+    * Hour
+    * Year, and direction in multiindex (after flatterning should be Year, and direction, and VEH in columns)
+
+4. A table to store HV (HV is a variable to Road ID and Hour only)
+    * Road ID
+    * Hour
+    * HV%
+
 # Table Schema
 
 1. A table to store basic road information (From traffic consultant)
@@ -16,10 +40,11 @@ The inputs of the library should be in a standard format. Therefore, table schem
     * Distance/ Length
 
 2. A table to store hourly information for each Road ID (From traffic consultant)
-    * Road ID: Primary Key
+    * Road ID: Primary Key (problem found: not unique; road id and direction tgt is unique)
+    * Direction
     * Year
     * Hour
-    * 2 Way VEH
+    * VEH
     * Average Speed
     * vehicle Type Breakdown: 16 columns
     * HV %
