@@ -29,13 +29,14 @@ df_1.reset_index(drop=True, inplace=True)
 df_2.reset_index(drop=True, inplace=True)
 
 result = pd.concat([df_1, df_2], axis = 1)
-result = result.T.drop_duplicates().T
+result = result.loc[:, ~result.columns.duplicated()]
 
-cols = ['Road ID', 'Year', 'Hour', '2 Way VEH', 'Average Speed', 'Taxi, LGV3, LGV4, LGV6, HGV7, HGV8, PLB, PV4, PV5, NFB6, NFB7, NFB8, FBSD, FBDD, MC, HV%']
+cols = ['Road ID', 'Year', 'Hour', '2 Way VEH', 'Average Speed', 'Taxi', 'LGV3', 'LGV4', 'LGV6', 'HGV7', 'HGV8', 'PLB','PV4', 'PV5', 'NFB6', 'NFB7', 'NFB8', 'FBSD', 'FBDD', 'MC', 'HV%']
 
 
 result.to_csv('hourlyVehicleFlow_transformed.csv', index = False)
 
+print(result)
 
 
 
