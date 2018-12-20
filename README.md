@@ -94,7 +94,7 @@ It is suggested the traffic consultant should follow the format below:
 1. pivot 1:
     * row: Vehicle Type
     * columns: ['Fuel Type', 'Year']
-    * value: count index
+    * value: sum age01
 
 2. pivot 2:
     * row: Vehicle Type
