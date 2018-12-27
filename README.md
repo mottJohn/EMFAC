@@ -66,13 +66,7 @@ It is suggested the traffic consultant should follow the format below:
     * Trips
     * VKT
 
-5. A table to store data from Transport Department (From TD Traffic Census)
-    * Year
-    * Region
-    * Road Type (Major or Minor or Total)
-    * Average Daily Vehicle-km
-
-6. A table to store Road Type code with description which is standard from Emfac
+5. A table to store Road Type code with description which is standard from Emfac
     * Code
     * Description
 
