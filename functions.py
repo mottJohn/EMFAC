@@ -76,8 +76,10 @@ for col_fuel in fuelRatio[year].columns:
     for i in VKT['Road Type (Speed Limit)'].unique():
         output = Trips_fuel[Trips_fuel.index.get_level_values(1).isin([i])].T
         output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
+        output = output.fillna(0)
         output.to_csv('Trips_{}_Type{}.csv'.format(col_fuel, i))
 
         output = VKT_fuel[VKT_fuel.index.get_level_values(1).isin([i])].T
         output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
+        output = output.fillna(0)
         output.to_csv('VKT_{}_Type{}.csv'.format(col_fuel, i))
