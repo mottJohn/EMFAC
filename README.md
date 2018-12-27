@@ -6,7 +6,7 @@ The inputs of the library should be in a standard format. Therefore, table schem
 # Template for Traffic Consultant
 Currently, the format of subconsultant's submission is not computer friendly. In fact, there are mutiple tables joined together as one large table.
 
-It is suggested the traffic consultant should follow the format below:
+It is suggested the traffic consultant should follow the format below or Table Schema 1 and 2:
 1. A table to store vehicle breakdown in Percent (The assuption of such table is vehice breakdown is a variable of time and road id only)
     * Road ID
     * Hour
