@@ -1,4 +1,15 @@
 ###############################
+# Program to generating input files for EMFAC HK
+# Vehicle Type can be expanded in user inputs
+# Fuel Type is automatically identified and used for calculations as well as output files
+# Road Type is also automatically identified
+# The program does not know which Road Type you want for Trips (e.g. no Type 1). It will generate all of them(no. of fuel types * no of road types). You need to select.
+
+#Created by John Chan
+#27/12/2018
+###############################
+
+###############################
 #USER INPUTS
 ###############################
 year = 2023 #the year of concerned
@@ -9,6 +20,9 @@ path_hourlyData = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\
 path_population = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\populationData.xlsx"
 path_emfac = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\tripsVKT_emfac.xlsx"
 path_standard_index = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\Road Type Code.xlsx"
+
+# cols with vehicle type (should be expanded if new types are added)
+cols_vehicle = ['PC', 'Taxi', 'LGV3', 'LGV4', 'LGV6', 'HGV7', 'HGV8', 'PLB', 'PV4', 'PV5', 'NFB6', 'NFB7', 'NFB8', 'FBSD', 'FBDD','MC']
 
 ###############################
 #CODES DO NOT MODIFY
@@ -23,9 +37,6 @@ population = pd.read_excel(path_population)
 Data = hourlyData.merge(basicInfo, on = ['Road ID', 'Direction']) #fiat and clean input format
 emfac = pd.read_excel(path_emfac)
 standard_index = pd.read_excel(path_standard_index)
-
-# cols with vehicle type (should be expanded if new types are added)
-cols_vehicle = ['PC', 'Taxi', 'LGV3', 'LGV4', 'LGV6', 'HGV7', 'HGV8', 'PLB', 'PV4', 'PV5', 'NFB6', 'NFB7', 'NFB8', 'FBSD', 'FBDD','MC']
 
 Trips = Data.copy() #create a copy of "Data"
 VKT = Data.copy() #create a copy of "Data"
