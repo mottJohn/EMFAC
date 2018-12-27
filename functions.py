@@ -54,7 +54,6 @@ hour = Data['Hour'].unique() #get unique hours, from 0 - 23
 # codes for generating hourly summary tables in excel tabs
 #######
 
-
 result = []
 writer = ExcelWriter("hourly trips.xlsx")
 writer_2 = ExcelWriter("hourly VKT.xlsx")
@@ -66,7 +65,6 @@ for hr in hour:
     df_2 = df_2.groupby('Road Type (Speed Limit)').sum()
     df_2 = df_2[cols_vehicle]
     df_2.to_excel(writer_2,'Hour {}'.format(hr))
-
 
 writer.save()
 writer_2.save()
