@@ -7,6 +7,7 @@ hourlyData = pd.read_csv('hourlyVehicleFlow_transformed.csv')
 population = pd.read_excel('populationData.xlsx')
 Data = hourlyData.merge(basicInfo, on = ['Road ID', 'Direction']) #fiat and clean input format
 emfac = pd.read_excel('tripsVKT_emfac.xlsx')
+standard_index = pd.read_excel('Road Type Code.xlsx')
 
 # cols with vehicle type (should be expanded if new types are added)
 cols_vehicle = ['PC', 'Taxi', 'LGV3', 'LGV4', 'LGV6', 'HGV7', 'HGV8', 'PLB', 'PV4', 'PV5', 'NFB6', 'NFB7', 'NFB8', 'FBSD', 'FBDD','MC']
@@ -71,7 +72,12 @@ tripsPerVKT = emfac.groupby('Vehicle Type').max()['Trips per Estimated VKT']
 for col_fuel in fuelRatio[year].columns:
     VKT_fuel = hourly_VKT.groupby(['Hour',hourly_VKT.index]).sum()*fuelRatio[year][col_fuel]
     Trips_fuel = VKT_fuel*tripsPerVKT
-    print(Trips_fuel)
 
+    for i in VKT['Road Type (Speed Limit)'].unique():
+        output = Trips_fuel[Trips_fuel.index.get_level_values(1).isin([i])].T
+        output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
+        output.to_csv('Trips_{}_Type{}.csv'.format(col_fuel, i))
 
-#print(hourly_VKT)
+        output = VKT_fuel[VKT_fuel.index.get_level_values(1).isin([i])].T
+        output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
+        output.to_csv('VKT_{}_Type{}.csv'.format(col_fuel, i))
