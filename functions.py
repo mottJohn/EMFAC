@@ -1,13 +1,28 @@
+###############################
+#USER INPUTS
+###############################
+year = 2023 #the year of concerned
+percentOfVKT = 12.6/100
+factor = 100
+path_basicInfo = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\roadBasicInfo.xlsx"
+path_hourlyData = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\hourlyVehicleFlow_transformed.csv"
+path_population = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\populationData.xlsx"
+path_emfac = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\tripsVKT_emfac.xlsx"
+path_standard_index = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\Road Type Code.xlsx"
+
+###############################
+#CODES DO NOT MODIFY
+###############################
 import numpy as np
 import pandas as pd
 from pandas import ExcelWriter
 
-basicInfo = pd.read_excel('roadBasicInfo.xlsx')
-hourlyData = pd.read_csv('hourlyVehicleFlow_transformed.csv')
-population = pd.read_excel('populationData.xlsx')
+basicInfo = pd.read_excel(path_basicInfo)
+hourlyData = pd.read_csv(path_hourlyData)
+population = pd.read_excel(path_population)
 Data = hourlyData.merge(basicInfo, on = ['Road ID', 'Direction']) #fiat and clean input format
-emfac = pd.read_excel('tripsVKT_emfac.xlsx')
-standard_index = pd.read_excel('Road Type Code.xlsx')
+emfac = pd.read_excel(path_emfac)
+standard_index = pd.read_excel(path_standard_index)
 
 # cols with vehicle type (should be expanded if new types are added)
 cols_vehicle = ['PC', 'Taxi', 'LGV3', 'LGV4', 'LGV6', 'HGV7', 'HGV8', 'PLB', 'PV4', 'PV5', 'NFB6', 'NFB7', 'NFB8', 'FBSD', 'FBDD','MC']
@@ -19,7 +34,6 @@ for col in cols_vehicle:
     Trips[col] = Data['VEH']*(Data[col]/100) #Trips equal to VEH*vehicleType(%)
     VKT[col]= Trips[col]* Trips['Length']/1000 #VKT equal to Trips * length in km
 
-year = 2023 #the year of concerned
 hour = Data['Hour'].unique() #get unique hours, from 0 - 23
 
 #######
@@ -65,7 +79,6 @@ total= per_fuelType.sum(axis = 1)
 fuelRatio = per_fuelType.div(total, axis = 'index')
 #print(fuelRatio[2023]['Petrol'])
 
-percentOfVKT = 12.6/100
 emfac['Trips per Estimated VKT'] = emfac['Trips']/(emfac['VKT']*percentOfVKT)
 tripsPerVKT = emfac.groupby('Vehicle Type').max()['Trips per Estimated VKT']
 
@@ -74,12 +87,12 @@ for col_fuel in fuelRatio[year].columns:
     Trips_fuel = VKT_fuel*tripsPerVKT
 
     for i in VKT['Road Type (Speed Limit)'].unique():
-        output = Trips_fuel[Trips_fuel.index.get_level_values(1).isin([i])].T
+        output = Trips_fuel[Trips_fuel.index.get_level_values(1).isin([i])].T*factor
         output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
         output = output.fillna(0)
         output.to_csv('Trips_{}_Type{}.csv'.format(col_fuel, i))
 
-        output = VKT_fuel[VKT_fuel.index.get_level_values(1).isin([i])].T
+        output = VKT_fuel[VKT_fuel.index.get_level_values(1).isin([i])].T*factor
         output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
         output = output.fillna(0)
         output.to_csv('VKT_{}_Type{}.csv'.format(col_fuel, i))
