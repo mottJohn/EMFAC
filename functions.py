@@ -35,6 +35,9 @@ basicInfo = pd.read_excel(path_basicInfo)
 hourlyData = pd.read_csv(path_hourlyData)
 population = pd.read_excel(path_population)
 Data = hourlyData.merge(basicInfo, on = ['Road ID', 'Direction']) #fiat and clean input format
+cols_Data = Data.columns.tolist()
+cols_Data = cols_Data[0:1]+cols_Data[-6:] + cols_Data[1:-6]
+Data = Data[cols_Data]
 emfac = pd.read_excel(path_emfac)
 standard_index = pd.read_excel(path_standard_index)
 
@@ -51,24 +54,23 @@ hour = Data['Hour'].unique() #get unique hours, from 0 - 23
 # codes for generating hourly summary tables in excel tabs
 #######
 
-"""
-result = []
-writer = ExcelWriter("hourly trips and VKT.xlsx")
-writer_2 = ExcelWriter("VKT.xlsx")
 
-cols = [x + '_VKT' for x in cols]
+result = []
+writer = ExcelWriter("hourly trips.xlsx")
+writer_2 = ExcelWriter("hourly VKT.xlsx")
 
 for hr in hour:
-    df = Data[(Data['Hour'] == hr) & (Data['Year'] == year)]
+    df = Trips[(Trips['Hour'] == hr) & (Trips['Year'] == year)]
     df.to_excel(writer,'Hour {}'.format(hr), index = False)
-    df_2 = df.groupby('Road Type (Speed Limit)').sum()
-    df_2 = df_2[cols]
+    df_2 = VKT[(VKT['Hour'] == hr) & (VKT['Year'] == year)]
+    df_2 = df_2.groupby('Road Type (Speed Limit)').sum()
+    df_2 = df_2[cols_vehicle]
     df_2.to_excel(writer_2,'Hour {}'.format(hr))
 
 
 writer.save()
 writer_2.save()
-"""
+
 hourly_VKT = pd.DataFrame() #empty dataframe to store hourly VKT
 for hr in hour:
     df = VKT[(VKT['Hour'] == hr) & (VKT['Year'] == year)] #filter hr and year
