@@ -3,7 +3,7 @@ A python library to transform data into [EMFAC](https://www.epd.gov.hk/epd/engli
 
 The inputs of the library should be in a standard format. Therefore, table schema is defined first, and the logic of generating output tables will be presented.
 
-#Get Started
+# Get Started
 1. Git clone or download the zip to your local directory
 
 2. Modify the user inputs section in functions.py (You can use the sample files in sample folder)
