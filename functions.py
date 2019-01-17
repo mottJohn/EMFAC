@@ -19,7 +19,7 @@ path_basicInfo = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\r
 path_hourlyData = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\hourlyVehicleFlow_transformed.csv"
 path_population = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\populationData.xlsx"
 path_emfac = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\tripsVKT_emfac.xlsx"
-path_standard_index = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\Road Type Code.xlsx"
+path_standard_index = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\Vehicle Type Code.xlsx"
 speedFraction = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\speedFraction.csv"
 
 # cols with vehicle type (should be expanded if new types are added)
