@@ -113,16 +113,16 @@ for col_fuel in fuelRatio[year].columns:
 writer_3 = ExcelWriter("speedFraction_output.xlsx")
 speedFraction = pd.read_csv(speedFraction)
 for i in speedFraction['Road Type'].unique():
-        for j in speedFraction['Vehicle Type'].unique():
-                temp = speedFraction[(speedFraction['Road Type'] == i) & (speedFraction['Vehicle Type'] == j)]
-                output = pd.pivot_table(temp, values = 'Speed Fraction', index=['Speed Fractions Range'], columns = ['Hour'], aggfunc=np.sum)
-                idx = pd.DataFrame()
-                idx['Speed Fractions Range'] = ['Spd008', 'Spd016', 'Spd024', 'Spd032' ,'Spd040', 'Spd048', 'Spd056',
-                'Spd064','Spd072','Spd080','Spd088','Spd096','Spd104','Spd112','Spd120','Spd128','Spd136','Spd144']
-                output = pd.merge(idx, output, on=['Speed Fractions Range'], how='left')
-                output = output.fillna(0)
-                output = output.set_index('Speed Fractions Range')
-                output = output/100
-                output.to_excel(writer_3,'Road Type {}_{} '.format(i,j))
+	for j in speedFraction['Vehicle Type'].unique():
+		temp = speedFraction[(speedFraction['Road Type'] == i) & (speedFraction['Vehicle Type'] == j)]
+		output = pd.pivot_table(temp, values = 'Speed Fraction', index=['Speed Fractions Range'], columns = ['Hour'], aggfunc=np.sum)
+		idx = pd.DataFrame()
+		idx['Speed Fractions Range'] = ['Spd008', 'Spd016', 'Spd024', 'Spd032' ,'Spd040', 'Spd048', 'Spd056',
+		'Spd064','Spd072','Spd080','Spd088','Spd096','Spd104','Spd112','Spd120','Spd128','Spd136','Spd144']
+		output = pd.merge(idx, output, on=['Speed Fractions Range'], how='left')
+		output = output.fillna(0)
+		output = output.set_index('Speed Fractions Range')
+		output = output/100
+		output.to_excel(writer_3,'Road Type {}_{} '.format(i,j))
 
 writer_3.save()             
