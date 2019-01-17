@@ -62,7 +62,7 @@ for hr in hour:
     df = Trips[(Trips['Hour'] == hr) & (Trips['Year'] == year)]
     df.to_excel(writer,'Hour {}'.format(hr), index = False)
     df_2 = VKT[(VKT['Hour'] == hr) & (VKT['Year'] == year)]
-    df_2 = df_2.groupby('Road Type (Speed Limit)').sum()
+    df_2 = df_2.groupby('Road Type').sum()
     df_2 = df_2[cols_vehicle]
     df_2.to_excel(writer_2,'Hour {}'.format(hr))
 
@@ -72,7 +72,7 @@ writer_2.save()
 hourly_VKT = pd.DataFrame() #empty dataframe to store hourly VKT
 for hr in hour:
     df = VKT[(VKT['Hour'] == hr) & (VKT['Year'] == year)] #filter hr and year
-    df_2 = df.groupby('Road Type (Speed Limit)').sum() #groupby road type and sum the VKT 
+    df_2 = df.groupby('Road Type').sum() #groupby road type and sum the VKT 
     df_2 = df_2[cols_vehicle] #select columns of concern
     df_2['Hour'] = hr # add the hour back for later use
 
@@ -97,7 +97,7 @@ for col_fuel in fuelRatio[year].columns:
     VKT_fuel = hourly_VKT.groupby(['Hour',hourly_VKT.index]).sum()*fuelRatio[year][col_fuel]
     Trips_fuel = VKT_fuel*tripsPerVKT
 
-    for i in VKT['Road Type (Speed Limit)'].unique():
+    for i in VKT['Road Type'].unique():
         output = Trips_fuel[Trips_fuel.index.get_level_values(1).isin([i])].T*factor
         output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
         output = output.fillna(0)
