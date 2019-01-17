@@ -14,6 +14,8 @@ The inputs of the library should be in a standard format. Therefore, table schem
 
 5. If you need to transform the data (See below section for details), use transformToHourlyFlow.py
 
+* Beware of the files format. Some are .xlsx. Some are .csv.
+
 # Template for Traffic Consultant
 Currently, the format of subconsultant's submission is not computer friendly. In fact, there are mutiple tables joined together as one large table.
 
@@ -43,13 +45,20 @@ If you follow the table schema below, you can use transformToHourlyFlow.py to tr
     * Hour
     * HV%
 
+5. A table to store speed fraction
+    * Road Type
+    * Hour
+    * Speed Fraction Ranges
+    * Vehicle Type
+    * Speed Fraction
+
 # Table Schema
 
 1. A table to store basic road information (From traffic consultant)
     * Road ID : Primary Key (problem found: not unique; road id and direction tgt is unique)
     * Road Name
     * Road Section
-    * Road Type (Speed Limit)
+    * Road Type (unique number consistent in all files)
     * Road Type (Major or Minor)
     * Direction [NB, SB, EB, WB, Bothbound]
     * Design Speed Limit [km/h]
@@ -84,6 +93,13 @@ If you follow the table schema below, you can use transformToHourlyFlow.py to tr
     * Code
     * Description
 
+6. A table to store speed fraction (From traffic consultant)
+    * Road Type (unique nuymber consistent across all files)
+    * Hour [0-23]
+    * Speed Fraction Ranges [must use epd code]
+    * Vehicle Type [epd code]
+    * Speed Fraction [percent in decimal]
+
 # Output Tables
 
 ## Hourly vehicle count in each road per year
@@ -114,6 +130,10 @@ If you follow the table schema below, you can use transformToHourlyFlow.py to tr
 ## Input files for EMFAC
 1. Trips per fuel type per road type
 2. VKT per fuel type per road type
+3. Speed fraction inputs
 
 # In short, what are we doing here?
 We are just modified the assumptions in Emfac Model to the project area instead of using the data for Hong Kong as a whole provided by EPD.
+
+# To-dos
+* Better documentations
