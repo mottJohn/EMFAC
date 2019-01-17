@@ -34,7 +34,7 @@ from pandas import ExcelWriter
 basicInfo = pd.read_excel(path_basicInfo)
 hourlyData = pd.read_csv(path_hourlyData)
 population = pd.read_excel(path_population)
-Data = hourlyData.merge(basicInfo, on = ['Road ID', 'Direction']) #fiat and clean input format
+Data = hourlyData.merge(basicInfo, on = ['Road ID', 'Direction']) #fiat and clean input format (inner join)
 cols_Data = Data.columns.tolist()
 cols_Data = cols_Data[0:1]+cols_Data[-6:] + cols_Data[1:-6]
 Data = Data[cols_Data]
