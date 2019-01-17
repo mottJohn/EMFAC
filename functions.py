@@ -20,6 +20,7 @@ path_hourlyData = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\
 path_population = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\populationData.xlsx"
 path_emfac = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\tripsVKT_emfac.xlsx"
 path_standard_index = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\Road Type Code.xlsx"
+speedFraction = r"C:\Users\CHA82870\OneDrive - Mott MacDonald\Documents\EMFAC\speedFraction.csv"
 
 # cols with vehicle type (should be expanded if new types are added)
 cols_vehicle = ['PC', 'Taxi', 'LGV3', 'LGV4', 'LGV6', 'HGV7', 'HGV8', 'PLB', 'PV4', 'PV5', 'NFB6', 'NFB7', 'NFB8', 'FBSD', 'FBDD','MC']
@@ -107,3 +108,21 @@ for col_fuel in fuelRatio[year].columns:
         output = pd.merge(standard_index, output, left_on='Code', right_index=True, how='left')
         output = output.fillna(0)
         output.to_csv('VKT_{}_Type{}.csv'.format(col_fuel, i))
+
+#Speed Fraction
+writer_3 = ExcelWriter("speedFraction_output.xlsx")
+speedFraction = pd.read_csv(speedFraction)
+for i in speedFraction['Road Type'].unique():
+        for j in speedFraction['Vehicle Type'].unique():
+                temp = speedFraction[(speedFraction['Road Type'] == i) & (speedFraction['Vehicle Type'] == j)]
+                output = pd.pivot_table(temp, values = 'Speed Fraction', index=['Speed Fractions Range'], columns = ['Hour'], aggfunc=np.sum)
+                idx = pd.DataFrame()
+                idx['Speed Fractions Range'] = ['Spd008', 'Spd016', 'Spd024', 'Spd032' ,'Spd040', 'Spd048', 'Spd056',
+                'Spd064','Spd072','Spd080','Spd088','Spd096','Spd104','Spd112','Spd120','Spd128','Spd136','Spd144']
+                output = pd.merge(idx, output, on=['Speed Fractions Range'], how='left')
+                output = output.fillna(0)
+                output = output.set_index('Speed Fractions Range')
+                output = output/100
+                output.to_excel(writer_3,'Road Type {}_{} '.format(i,j))
+
+writer_3.save()             
