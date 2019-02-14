@@ -1,4 +1,6 @@
 import pandas as pd 
+import numpy as np
+from pandas import ExcelWriter
 
 xls = pd.ExcelFile('forTransformation_speedFraction.xlsx')
 
@@ -26,3 +28,13 @@ cols = cols[-1:] + cols[:-1]
 result = result[cols]
 result = result.sort_values(['Road Type', 'Hour'])
 result.to_csv('speedFraction.csv', index=False)
+
+#############################################
+# For EPD template
+############################################
+writer = ExcelWriter("speedFraction_EPD.xlsx")
+
+for vehicleType in result['Vehicle Type'].unique():
+    data = pd.pivot_table(result, values= 'Speed Fraction', index= ['Speed Fractions Range'], columns= ['Hour'], aggfunc = np.sum)
+    #print(data)
+    data.to_excel(writer,'{}'.format(vehicleType))
